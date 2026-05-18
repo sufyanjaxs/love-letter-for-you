@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Love Letter For You</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a1f 0%, #2d1b3d 50%, #1a0a1f 100%);
+            background-attachment: fixed;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            perspective: 1000px;
+        }
+
+        .envelope-front {
+            background: linear-gradient(145deg, #fff5f5, #ffe4e6);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 80px rgba(255, 0, 80, 0.3);
+            cursor: pointer;
+            transition: all 0.8s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .envelope-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="30">💕</text></svg>') center/contain repeat;
+            opacity: 0.1;
+            border-radius: 20px;
+        }
+
+        .envelope-front:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 100px rgba(255, 0, 80, 0.4);
+        }
+
+        .click-hint {
+            text-align: center;
+            color: #d6336c;
+            font-size: 1.1rem;
+            padding: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .heart-seal {
+            text-align: center;
+            font-size: 4rem;
+            color: #e11d48;
+            text-shadow: 0 0 20px rgba(225, 29, 72, 0.5);
+        }
+
+        .letter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff0f5 0%, #fff5f5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s ease;
+        }
+
+        .letter.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .letter-content {
+            max-width: 700px;
+            background: white;
+            padding: 60px 50px;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.8s ease;
+        }
+
+        .letter.show .letter-content {
+            transform: scale(1);
+        }
+
+        .letter-content h1 {
+            color: #e11d48;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .letter-content p {
+            color: #374151;
+            font-size: 1.2rem;
+            line-height: 2;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+            color: #e11d48;
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e11d48;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #be123c;
+            transform: scale(1.05);
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff4081;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="envelope">
+        <div class="envelope-front" onclick="openLetter()">
+            <div class="heart-seal">💌</div>
+            <p class="click-hint">Click to open your love letter</p>
+        </div>
+    </div>
+
+    <div class="letter" id="letter">
+        <button class="close-btn" onclick="closeLetter()">Close</button>
+        <div class="letter-content">
+            <h1>My Dearest Love,</h1>
+            
+            <p>Every moment with you feels like a beautiful dream I never want to wake up from. You have transformed my world into a paradise filled with laughter, warmth, and endless love.</p>
+            
+            <p>When I think of you, my heart skips a beat. Your smile brightens my darkest days, your voice is the sweetest melody, and your touch makes me feel alive like never before. You are my everything - my sun, my moon, and all my stars.</p>
+            
+            <p>I promise to love you not just today, but every single day for the rest of my life. Through joys and sorrows, successes and failures, I will stand by your side, holding your hand and never letting go.</p>
+            
+            <p>You are my soulmate, my best friend, my everything. I am so grateful to have you in my life, and I will cherish you forever.</p>
+            
+            <p>Thank you for being you. Thank you for loving me. Thank you for making my life complete.</p>
+            
+            <p class="signature">With all my love,<br>Forever yours 💕</p>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            document.getElementById('letter').classList.add('show');
+        }
+
+        function closeLetter() {
+            document.getElementById('letter').classList.remove('show');
+        }
+
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+            document.getElementById('hearts').appendChild(heart);
+        }
+    </script>
+</body>
+</html>
